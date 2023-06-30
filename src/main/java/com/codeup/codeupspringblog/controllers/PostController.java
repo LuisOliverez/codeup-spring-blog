@@ -16,20 +16,21 @@ public class PostController {
     }
 
 
-    @GetMapping("/posts/{id}")
+    //SHOULD THIS TAKE AN INT FOR THE ID??
+    @GetMapping("/posts/{id}")//set url string with variable id
     @ResponseBody
-    public String viewPost(@PathVariable String id){
-        return "View an individual post";
+    public String viewPost(@PathVariable Long id){//include pathvariable
+        return "View an individual post" + id;
     }
 
 
-    @GetMapping("/posts/create")
+    @GetMapping("/posts/create")//set url string
     @ResponseBody
     public String getCreateForm(){
         return "Create new post form";
     }
 
-    @PostMapping("/posts/create")
+    @PostMapping("/posts/create")//set url string
     @ResponseBody
     public String createPost(){
         //logic for creating a new blog post

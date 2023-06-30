@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dice Roll Results</title>
+</head>
+<body>
+
+
+<h1>Dice Roll Results are</h1>
+<p>Your Guess:<span th:text="${guess}"></span> </p>
+<p>Random Roll:<span th:text="${roll}"></span> </p>
+
+
+<!--BONUS   -->
+<p>Number of matches:<span th:text="${matches}"></span></p>
+<h2>All Roles:</h2>
+<ul>
+    <li th:each="roll : ${rolls}" th:text="${roll}"></li>
+</ul>
+
+</body>
+</html>

@@ -10,6 +10,7 @@ public class HomeControllers {
     @GetMapping("/")
     @ResponseBody
     public String landingPage() {
+
         return "This is the landing page!";
     }
 }
