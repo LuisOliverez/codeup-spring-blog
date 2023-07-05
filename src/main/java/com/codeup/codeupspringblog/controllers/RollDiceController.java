@@ -15,8 +15,8 @@ public class RollDiceController {
     // GET request for the /roll-dice endpoint
     @GetMapping("/roll-dice")
     public String showRollDiceForm() {
-        return "roll-dice"; // shows roll-dice.html template
-    }
+        return "roll-dice";
+    }// shows roll-dice.html template
 
     // GET request for the /roll-dice/{guess} endpoint
     @GetMapping("/roll-dice/{guess}")
@@ -24,8 +24,13 @@ public class RollDiceController {
         int roll = rollDice(); // generates a random number to guess against
         model.addAttribute("guess", guess);
         model.addAttribute("roll", roll);
+        model.addAttribute(("matches"), countMathces(guess, roll));
        model.addAttribute("rolls", getRolls());
         return "roll-dice-results";
+    }
+
+    private Object countMathces(int guess, int roll) {
+        return guess == roll ? 1: 0;
     }
 
     // helper method to "roll a die" and get a random number from 1 to 6
