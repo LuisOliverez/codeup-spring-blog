@@ -2,9 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>All Posts</title>
 </head>
 <body>
+
+<h1>All Posts</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Body</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="post : ${posts}" >
+        <td th:text="${post.title}"></td>
+        <td th:text="${post.body}"></td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>
