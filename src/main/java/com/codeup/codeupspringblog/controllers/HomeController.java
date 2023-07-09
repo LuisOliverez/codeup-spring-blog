@@ -1,5 +1,6 @@
 package com.codeup.codeupspringblog.controllers;
 
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
