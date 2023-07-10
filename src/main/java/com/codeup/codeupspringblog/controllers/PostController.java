@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Optional;
 
 
 @Controller
@@ -35,15 +35,21 @@ public class PostController {
 
     //SHOULD THIS TAKE AN INT FOR THE ID??
     @GetMapping("/posts/{id}")//set url string with variable id
-    public String viewPost(@PathVariable Long id, Model model){//include pathvariable
+    public String viewPost(@PathVariable Long id, Model model) {//include pathvariable
 
-        Post post = new Post(1L,"Sample Post", "This is a sample post.");
+        Optional<Post> optionalPost = postRepository.findById(id);
 
-        model.addAttribute("post", post);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
 
-        return "posts/show";
+
+            model.addAttribute("post", post);
+
+            return "posts/show";
+        } else {
+            return "error";
+        }
     }
-
 
     @GetMapping("/posts/create")//set url string
     public String getCreateForm(){
