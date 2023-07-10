@@ -2,23 +2,29 @@ package com.codeup.codeupspringblog.controllers;
 
 import jakarta.persistence.*;
 import lombok.*;
-@Getter
+
+    @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
 
     @Entity
-
     @Table(name = "posts")
     public class Post {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private long id;
+        private Long id;
 
-        @Column(nullable = false, length = 100)
+        @Column(nullable = false)
         private String title;//title of post
 
-        @Column(nullable = false, length = 1000)
+        @Column
         private String body;//body of post
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "user_id", nullable = false)
+        private User user;
+
+
 }

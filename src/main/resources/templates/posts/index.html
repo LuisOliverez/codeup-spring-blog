@@ -12,6 +12,7 @@
     <tr>
         <th>Title</th>
         <th>Body</th>
+        <th>Post</th>
     </tr>
     </thead>
 
@@ -19,6 +20,7 @@
     <tr th:each="post : ${posts}" >
         <td th:text="${post.title}"></td>
         <td th:text="${post.body}"></td>
+        <td th:text="${post.user.email}"></td>
     </tr>
     </tbody>
 </table>
