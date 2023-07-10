@@ -7,7 +7,9 @@ import lombok.*;
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
+
     @Entity
+
     @Table(name = "posts")
     public class Post {
         @Id

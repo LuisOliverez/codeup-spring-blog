@@ -24,12 +24,12 @@ public class RollDiceController {
         int roll = rollDice(); // generates a random number to guess against
         model.addAttribute("guess", guess);
         model.addAttribute("roll", roll);
-        model.addAttribute(("matches"), countMathces(guess, roll));
+        model.addAttribute(("matches"), countMatches(guess, roll));
        model.addAttribute("rolls", getRolls());
         return "roll-dice-results";
     }
 
-    private Object countMathces(int guess, int roll) {
+    private Object countMatches(int guess, int roll) {
         return guess == roll ? 1: 0;
     }
 
