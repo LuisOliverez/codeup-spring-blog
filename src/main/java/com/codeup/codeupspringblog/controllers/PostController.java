@@ -1,5 +1,6 @@
 package com.codeup.codeupspringblog.controllers;
 
+import com.codeup.codeupspringblog.models.EmailService;
 import com.codeup.codeupspringblog.repositories.PostRepository;
 import com.codeup.codeupspringblog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 
 @Controller
@@ -22,11 +21,13 @@ public class PostController {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public PostController(PostRepository postRepository, UserRepository userRepository) {
+    public PostController(PostRepository postRepository, UserRepository userRepository, EmailService emailService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
 
@@ -71,6 +72,9 @@ public class PostController {
         post.setTitle(title);
         post.setBody(body);
 
+
+
+
         // Get the user from the UserRepository using user_id
         Optional<User> optionalUser = userRepository.findById(user_id);
         if (optionalUser.isPresent()) {
@@ -80,7 +84,15 @@ public class PostController {
             return "error";
         }
 
+
+
+        String subject = "New Post Created";
+        String emailBody = "A new post has been created: " + post.getTitle();
+        emailService.prepareAndSend(post, subject, emailBody);
+
+
         postRepository.save(post);
+
 
         return "redirect:/posts";
     }
