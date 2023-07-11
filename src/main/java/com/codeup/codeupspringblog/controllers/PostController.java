@@ -64,30 +64,27 @@ public class PostController {
         return "posts/create";
     }
 
-    @PostMapping("/posts/create")//set url string
-    public String createPost(@RequestParam String title, @RequestParam String body){
-       //CREATE NEW POST OBJECT
-        Post post  = new Post();
+    @PostMapping("/posts/create")
+    public String createPost(@RequestParam String title, @RequestParam String body, @RequestParam Long user_id) {
+        // Create a new post object
+        Post post = new Post();
         post.setTitle(title);
         post.setBody(body);
 
-        //GET A RANDOM USER FROM THE USERREPOSITORY
-        List<User> users = userRepository.findAll();
-        if (!users.isEmpty()){
-            User randomUser = users.get(new Random().nextInt(users.size()));
-        post.setUser(randomUser);
-        }else {
+        // Get the user from the UserRepository using user_id
+        Optional<User> optionalUser = userRepository.findById(user_id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            post.setUser(user);
+        } else {
             return "error";
         }
-
-
-
-
 
         postRepository.save(post);
 
         return "redirect:/posts";
     }
+
 
 
 }
