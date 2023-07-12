@@ -6,10 +6,7 @@ import com.codeup.codeupspringblog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.Optional;
@@ -61,22 +58,22 @@ public class PostController {
     }
 
     @GetMapping("/posts/create")//set url string
-    public String getCreateForm(){
+    public String getCreateForm(Model model){
+        model.addAttribute("post", new Post());
         return "posts/create";
     }
 
+
+    //maps to form to create a new post
     @PostMapping("/posts/create")
-    public String createPost(@RequestParam String title, @RequestParam String body, @RequestParam Long user_id) {
+    public String createPost(@ModelAttribute Post post, @RequestParam Long id) {
         // Create a new post object
-        Post post = new Post();
-        post.setTitle(title);
-        post.setBody(body);
-
-
-
+//        Post post = new Post();
+//        post.setTitle(title);
+//        post.setBody(body);
 
         // Get the user from the UserRepository using user_id
-        Optional<User> optionalUser = userRepository.findById(user_id);
+        Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             post.setUser(user);
@@ -84,18 +81,49 @@ public class PostController {
             return "error";
         }
 
+//        //sends confirmation email to test email(for now)
+//        String subject = "New Post Created";
+//        String emailBody = "A new post has been created: " + post.getTitle();
+//        emailService.prepareAndSend(post, subject, emailBody);
 
-
-        String subject = "New Post Created";
-        String emailBody = "A new post has been created: " + post.getTitle();
-        emailService.prepareAndSend(post, subject, emailBody);
-
-
+        //saves the post to the database via postRepository
         postRepository.save(post);
 
-
+        //redirects to posts page with new post listed
         return "redirect:/posts";
     }
+
+
+    //mapping to edit post form
+    @GetMapping("/posts/{id}/edit")
+    public  String editPost(@PathVariable Long id, Model model){
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isPresent()){
+            Post post = optionalPost.get();
+            model.addAttribute("post", post);
+            return "posts/edit";
+        }else {
+            return "error";
+        }
+    }
+
+
+    @PostMapping("/posts/{id}/edit")
+    public String updatePost(@PathVariable Long id, @ModelAttribute("post") Post updatePost){
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isPresent()){
+            Post post = optionalPost.get();
+            //update the post with the new data
+            post.setTitle(updatePost.getTitle());
+            post.setBody(updatePost.getBody());
+            //save the updated post
+            postRepository.save(post);
+            return "redirect:/posts/{id}";
+        }else {
+            return "error";
+        }
+    }
+
 
 
 
